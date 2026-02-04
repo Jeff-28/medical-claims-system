@@ -18,3 +18,4 @@ postgres_data/
 # Dev
 .env
 backend/.vscode/settings.json
+frontend/.vscode/settings.json
