@@ -1,0 +1,19 @@
+# Backend
+backend/tmp/
+backend/log/
+backend/claims_uploads/
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# Docker
+postgres_data/
+
+# OS
+.DS_Store
+
+# Dev
+.env
