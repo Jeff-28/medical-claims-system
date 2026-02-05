@@ -6,6 +6,11 @@ import { claimService, exportService } from '../services/api';
 const ClaimsList = () => {
   const [claims, setClaims] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   useEffect(() => {
     fetchClaims();
@@ -16,11 +21,19 @@ const ClaimsList = () => {
     try {
       const response = await claimService.getAll();
       setClaims(response.data);
+      setPagination((prev) => ({
+        ...prev,
+        total: response.data.length,
+      }));
     } catch (error) {
       message.error('Failed to fetch claims');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleTableChange = (newPagination) => {
+    setPagination(newPagination);
   };
 
   const handleExport = async () => {
@@ -138,9 +151,12 @@ const ClaimsList = () => {
           dataSource={claims}
           rowKey='id'
           pagination={{
-            pageSize: 10,
+            ...pagination,
+            showSizeChanger: true,
             showTotal: (total) => `Total ${total} claims`,
+            pageSizeOptions: ['10', '20', '50', '100'],
           }}
+          onChange={handleTableChange}
         />
       )}
     </div>
