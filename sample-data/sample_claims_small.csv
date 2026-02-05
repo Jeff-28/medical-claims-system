@@ -1,0 +1,6 @@
+patient_first_name,patient_last_name,patient_dob,claim_number,service_date,amount,status
+John,Doe,1980-01-15,CLM-001,2024-01-10,250.50,pending
+Jane,Smith,1975-05-20,CLM-002,2024-01-11,150.00,submitted
+Robert,Johnson,1990-03-25,CLM-003,2024-01-12,500.75,paid
+Maria,Garcia,1985-07-30,CLM-004,2024-01-13,325.00,denied
+John,Doe,1980-01-15,CLM-005,2024-01-14,180.25,pending

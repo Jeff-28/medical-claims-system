@@ -1,0 +1,16 @@
+patient_first_name,patient_last_name,patient_dob,claim_number,service_date,amount,status
+John,Doe,1980-01-15,CLM-301,2024-01-10,250.50,pending
+Jane,Smith,1975-05-20,CLM-302,2024-01-11,150.00,submitted
+Robert,Johnson,INVALID-DATE,CLM-303,2024-01-12,500.75,paid
+Maria,Garcia,1985-07-30,CLM-304,INVALID-DATE,325.00,denied
+Michael,Brown,1978-11-12,CLM-305,2024-01-14,-100.00,paid
+,Smith,1975-05-20,CLM-306,2024-01-15,275.50,submitted
+David,,1983-09-22,CLM-307,2024-01-16,195.00,pending
+Sarah,Rodriguez,1988-12-05,CLM-308,2024-01-17,680.25,invalid_status
+James,Wilson,1995-02-28,CLM-302,2024-01-18,310.00,submitted
+Linda,Anderson,1970-06-14,CLM-309,2024-01-19,0.00,denied
+Patricia,Taylor,1987-08-19,CLM-310,2024-01-20,540.00,paid
+Christopher,Thomas,1993-03-07,,2024-01-21,385.50,pending
+Barbara,Moore,1982-10-25,CLM-312,2024-01-22,,submitted
+Daniel,Jackson,1991-01-30,CLM-313,2024-01-23,715.25,
+Elizabeth,White,,CLM-314,2024-01-24,260.00,denied
