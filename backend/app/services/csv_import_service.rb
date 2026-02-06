@@ -19,16 +19,16 @@ class CsvImportService
 
       begin
         # Validate required fields
-        validate_required_fields!(row, row_number)
+        validate_required_fields!(row)
 
         # Validate dates
-        validate_date_format!(row, row_number)
+        validate_date_format!(row)
 
         # Validate amount
-        validate_amount!(row, row_number)
+        validate_amount!(row)
 
         # Validate status
-        validate_status!(row, row_number)
+        validate_status!(row)
 
         # Create or find patient
         patient = create_patient(row, row_number)
