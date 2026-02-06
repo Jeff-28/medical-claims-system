@@ -3,12 +3,27 @@ module Api
     class ClaimImportsController < ApplicationController
       def index
         @claim_imports = ClaimImport.order(created_at: :desc)
-        render json: @claim_imports
+        render json: @claim_imports.as_json(
+          methods: [:error_count],
+          include: {
+            import_errors: {
+              only: %i[id row_number error_type error_message row_data]
+            }
+          }
+        )
       end
 
       def show
         @claim_import = ClaimImport.find(params[:id])
-        render json: @claim_import.as_json(include: { claims: { include: :patient } })
+        render json: @claim_import.as_json(
+          methods: [:error_count],
+          include: {
+            claims: { include: :patient },
+            import_errors: {
+              only: %i[id row_number error_type error_message row_data]
+            }
+          }
+        )
       end
 
       def create
@@ -40,7 +55,17 @@ module Api
           service.process
         end
 
-        render json: claim_import, status: :created
+        # Reload to get error count
+        claim_import.reload
+
+        render json: claim_import.as_json(
+          methods: [:error_count],
+          include: {
+            import_errors: {
+              only: %i[id row_number error_type error_message row_data]
+            }
+          }
+        ), status: :created
       rescue StandardError => e
         render json: { error: e.message }, status: :unprocessable_content
       end

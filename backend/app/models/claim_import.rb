@@ -1,5 +1,6 @@
 class ClaimImport < ApplicationRecord
   has_many :claims, dependent: :destroy
+  has_many :import_errors, dependent: :destroy
 
   STATUSES = %w[pending processing completed failed].freeze
 
@@ -12,5 +13,13 @@ class ClaimImport < ApplicationRecord
 
   def mark_as_failed!
     update!(status: 'failed')
+  end
+
+  def has_errors?
+    import_errors.exists?
+  end
+
+  def error_count
+    import_errors.count
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_03_171656) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_05_230609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,18 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_03_171656) do
     t.index ["status"], name: "index_claims_on_status"
   end
 
+  create_table "import_errors", force: :cascade do |t|
+    t.bigint "claim_import_id", null: false
+    t.integer "row_number", null: false
+    t.string "error_type", null: false
+    t.text "error_message"
+    t.jsonb "row_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["claim_import_id"], name: "index_import_errors_on_claim_import_id"
+    t.index ["error_type"], name: "index_import_errors_on_error_type"
+  end
+
   create_table "patients", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -58,4 +70,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_03_171656) do
 
   add_foreign_key "claims", "claim_imports"
   add_foreign_key "claims", "patients"
+  add_foreign_key "import_errors", "claim_imports"
 end
