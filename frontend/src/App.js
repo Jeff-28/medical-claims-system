@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import ClaimsList from './pages/ClaimsList';
 import ImportClaims from './pages/ImportClaims';
 import 'antd/dist/reset.css';
@@ -14,6 +15,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route
+            path='/dashboard'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
           <Route
             path='/claims'
             element={
@@ -34,7 +45,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path='/' element={<Navigate to='/claims' />} />
+          <Route path='/' element={<Navigate to='/dashboard' />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

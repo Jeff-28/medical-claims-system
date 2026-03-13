@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout as AntLayout, Menu, Button } from 'antd';
 import {
+  DashboardOutlined,
   FileTextOutlined,
   UploadOutlined,
   LogoutOutlined,
@@ -21,6 +22,12 @@ const Layout = ({ children }) => {
   };
 
   const menuItems = [
+    {
+      key: '/dashboard',
+      icon: <DashboardOutlined />,
+      label: 'Dashboard',
+      onClick: () => navigate('/dashboard'),
+    },
     {
       key: '/claims',
       icon: <FileTextOutlined />,

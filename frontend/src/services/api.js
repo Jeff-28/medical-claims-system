@@ -73,4 +73,8 @@ export const exportService = {
   exportClaims: () => api.post('/exports', {}, { responseType: 'blob' }),
 };
 
+export const dashboardService = {
+  getStats: () => api.get('/dashboard/stats'),
+};
+
 export default api;
