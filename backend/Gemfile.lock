@@ -111,6 +111,8 @@ GEM
     erubi (1.13.1)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     htmlentities (4.4.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
@@ -288,6 +290,7 @@ DEPENDENCIES
   caxlsx_rails
   csv
   debug
+  groupdate
   jwt
   pg (~> 1.1)
   pry-rails

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
       # Auth routes
       post '/auth/login', to: 'auth#login'
       post '/auth/register', to: 'auth#register'
+
+      get '/dashboard/stats', to: 'dashboard#stats'
       
       # Resource routes
       resources :patients
