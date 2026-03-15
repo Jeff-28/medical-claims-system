@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import ClaimsList from './pages/ClaimsList';
 import ImportClaims from './pages/ImportClaims';
 import 'antd/dist/reset.css';
+import ClaimDetails from './pages/ClaimDetails';
 
 function App() {
   return (
@@ -31,6 +32,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ClaimsList />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/claims/:id'
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ClaimDetails />
                 </Layout>
               </ProtectedRoute>
             }

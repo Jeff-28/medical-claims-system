@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, Tag, message, Spin } from 'antd';
-import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
+import {
+  Table,
+  Button,
+  Space,
+  Tag,
+  message,
+  Spin,
+  Tooltip,
+  Dropdown,
+} from 'antd';
+import {
+  DownloadOutlined,
+  ReloadOutlined,
+  ThunderboltOutlined,
+} from '@ant-design/icons';
 import { claimService, exportService } from '../services/api';
+import StatusChangeModal from '../components/StatusChangeModal';
 
 const ClaimsList = () => {
   const [claims, setClaims] = useState([]);
@@ -11,6 +25,8 @@ const ClaimsList = () => {
     pageSize: 10,
     total: 0,
   });
+  const [selectedClaim, setSelectedClaim] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     fetchClaims();
@@ -55,6 +71,16 @@ const ClaimsList = () => {
     }
   };
 
+  const handleStatusChange = (claim) => {
+    setSelectedClaim(claim);
+    setModalVisible(true);
+  };
+
+  const handleStatusChangeSuccess = (updatedClaim) => {
+    // Update the claim in the list
+    setClaims(claims.map((c) => (c.id === updatedClaim.id ? updatedClaim : c)));
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       pending: 'orange',
@@ -65,12 +91,60 @@ const ClaimsList = () => {
     return colors[status] || 'default';
   };
 
+  const getActionButtons = (record) => {
+    console.log('DEBUG FINAL', record);
+    if (record.final_state) {
+      return (
+        <Tooltip title='This claim is in a final state'>
+          <Tag color='blue'>Final</Tag>
+        </Tooltip>
+      );
+    }
+
+    if (!record.available_actions || record.available_actions.length === 0) {
+      return null;
+    }
+
+    // If only one action available, show direct button
+    if (record.available_actions.length === 1) {
+      const action = record.available_actions[0];
+      return (
+        <Button
+          size='small'
+          type='primary'
+          icon={<ThunderboltOutlined />}
+          onClick={() => handleStatusChange(record)}
+        >
+          {action.charAt(0).toUpperCase() + action.slice(1)}
+        </Button>
+      );
+    }
+
+    // If multiple actions, show dropdown
+    const menuItems = record.available_actions.map((action) => ({
+      key: action,
+      label: action.charAt(0).toUpperCase() + action.slice(1),
+      onClick: () => handleStatusChange(record),
+    }));
+
+    return (
+      <Dropdown menu={{ items: menuItems }} trigger={['click']}>
+        <Button size='small' type='primary' icon={<ThunderboltOutlined />}>
+          Change Status
+        </Button>
+      </Dropdown>
+    );
+  };
+
   const columns = [
     {
       title: 'Claim Number',
       dataIndex: 'claim_number',
       key: 'claim_number',
       sorter: (a, b) => a.claim_number.localeCompare(b.claim_number),
+      render: (_, record) => {
+        return <a href={`/claims/${record.id}`}>{record.claim_number}</a>;
+      },
     },
     {
       title: 'Patient Name',
@@ -107,6 +181,7 @@ const ClaimsList = () => {
         { text: 'Submitted', value: 'submitted' },
         { text: 'Denied', value: 'denied' },
         { text: 'Paid', value: 'paid' },
+        { text: 'Canceled', value: 'canceled' },
       ],
       onFilter: (value, record) => record.status === value,
     },
@@ -114,6 +189,12 @@ const ClaimsList = () => {
       title: 'Import Source',
       key: 'import_source',
       render: (_, record) => record.claim_import?.file_name || 'N/A',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => getActionButtons(record),
+      width: 150,
     },
   ];
 
@@ -157,6 +238,19 @@ const ClaimsList = () => {
             pageSizeOptions: ['10', '20', '50', '100'],
           }}
           onChange={handleTableChange}
+        />
+      )}
+
+      {/* Status Change Modal */}
+      {selectedClaim && (
+        <StatusChangeModal
+          claim={selectedClaim}
+          visible={modalVisible}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedClaim(null);
+          }}
+          onSuccess={handleStatusChangeSuccess}
         />
       )}
     </div>

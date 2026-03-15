@@ -9,7 +9,11 @@ Rails.application.routes.draw do
       
       # Resource routes
       resources :patients
-      resources :claims
+      resources :claims do
+        member do
+          post :transition
+        end
+      end
       resources :claim_imports, only: [:index, :create, :show]
       
       # Export route

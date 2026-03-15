@@ -55,6 +55,8 @@ export const claimService = {
   create: (data) => api.post('/claims', { claim: data }),
   update: (id, data) => api.put(`/claims/${id}`, { claim: data }),
   delete: (id) => api.delete(`/claims/${id}`),
+  transition: (id, status, notes) =>
+    api.post(`/claims/${id}/transition`, { status, notes }),
 };
 
 export const claimImportService = {
